@@ -1,15 +1,22 @@
 <?php
-$dev = [
-  ["TENCENT", "PUBG"],
-  ["MOONTON","MOBILE LEGEND"],
-  [],
-    []
+
+$game = [
+  ["TENCENT", "PUBG", 1],
+  ["MOONTON","MOBILE LEGEND", 2],
+  ["GARENA", "CODM", 3],
+  ["GARENA", "FREE FIRE", 4],
+  ["TENCENT", "AOV", 5],
+  ["TENCENT", "CROS FIRE", 6],
+  ["SUPERCELL", "CLASH OF CLANS", 7],
+  ["SUPERCELL", "CLASH ROYALE", 8],
+  ["MOONTON", "SCS.io", 9]
+
 ];
 
 // Membuat Pilihan
 $temp_arr=[];
 
-foreach ($dev as $key) {
+foreach ($game as $key) {
 //    var_dump($key[0]);
    $temp_arr[]=$key[0];
 }
@@ -19,7 +26,7 @@ $pilihan=array_unique($temp_arr);
 // End pilihan
 
 // Blok filter
-$games=[];
+$dev_game=[];
 if(isset($_POST['filter']))
 {
     // echo "tes";
@@ -27,19 +34,19 @@ if(isset($_POST['filter']))
     $filter=$_POST['filter'];
     if($filter == "")
     {
-        $games=$dev;
+        $dev_game=$game;
     }else{
-        foreach($dev as $key)
+        foreach($game as $key)
         {
             if($key[0] == $filter){
-                $games[]=[$key[0],$key[1],$key[2],$key[3]];
+                $dev_game[]=[$key[0],$key[1],$key[2]];
             }
         }
     }
 }else{
-    $games=$dev;
+    $dev_game=$game;
 }
-// var_dump($games);
+// var_dump($dev_game);
 
 ?>
 
@@ -49,66 +56,55 @@ if(isset($_POST['filter']))
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Pasokan Laptop</title>
-<link rel="shortcut icon" href="gaming.png" type="image/x-icon">
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom">              
-  <a class="navbar-brand" href="#"><img  width="150" height="100"  src="gaming.png"></a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-   
-  </div>
-</nav>
-<div class="d-flex border-bottom solid 5px"><h2 class="mx-auto mt-3">Stock Laptop Gaming AZURE GAMING 13 Maret 2210</div>
-<br>
-
-<form class="form-inline my-2 my-lg-0 bg-warning"  action="remidi.php" method="post">
-    <select  name="filter" class="mr-2 ml-2 mb-2 mt-2">
-            <option value="" class="mr-2 ml-2">
-                Tampilkan Semua
-            </option>
-            <?php foreach ($pilihan as $key): ?>
-                <option value="<?php echo $key; ?>"><?php echo $key; ?></option>
-            <?php endforeach; ?>      
-        </select>
-        <input type="submit" value="filter" class="btn-primary">
-      
-    </form>
-    <table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">MERK</th>
-      <th scope="col">JENIS</th>
-      <th scope="col">STOCK</th>
-      <th scope="col">HARGA</th>
-    </tr>
-  </thead>
-  <?php $grand_total=0; ?>
-  <?php foreach ($games as $key => $value): ?>
-  <tbody>
-    <tr>
-      <td><?php echo $value[0]; ?></td>
-      <td><?php echo $value[1]; ?></td>
-      <td><?php echo $value[2]; ?></td>
-      <td>Rp. <?php echo number_format($value[3]); ?></td>
-    </tr>
-</tbody>
-<?php $grand_total+=$value[3]*$value[2]; ?>
-<?php endforeach; ?>
-<thead class="thead-light">
-    <tr>
-      <th scope="col">Total Keseluruhan</th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-      <th scope="col">Rp. <?php echo number_format($grand_total); ?></th>
-    </tr>
-  </thead>
-
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="text-center" style="color: red;">DAFTAR GAME</h2>
+        <form action="remidi.php" method="post">
+            <select name="filter">
+                <option value="">
+                    Tampilkan Semua
+                </option>
+                <?php foreach ($pilihan as $key): ?>
+                    <option value="<?php echo $key; ?>"><?php echo $key; ?></option>
+                <?php endforeach; ?>      
+              </select>
+            <input class="btn btn-primary" type="submit" value="filter">
+          </form>
+        <table class="table table-secondary mt-2">
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">DEVELOPER</th>
+          <th scope="col">GAME</th>
+          <th scope="col">PERINGKAT</th>
+        </tr>
+        </thead>
+        <?php $grand_total=0; ?>
+        <?php foreach ($dev_game as $key => $value): ?>
+        <tbody>
+        <tr>
+          <td><?php echo $value[0]; ?></td>
+          <td><?php echo $value[1]; ?></td>
+          <td><?php echo $value[2]; ?></td>
+        </tr>
+      </tbody>
+      <?php $grand_total+=$value[2]; ?>
+      <?php endforeach; ?>
+      <thead class="thead-light">
+        <tr>
+          <th scope="col">Total Keseluruhan</th>
+          <th scope="col"></th>
+          <th scope="col"><?php echo $grand_total; ?></th>
+        </tr>
+      </thead>
 </table>
+</div>
+</div>
+</div>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
